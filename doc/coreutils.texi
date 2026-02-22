@@ -14665,6 +14665,10 @@ Print all current settings in a form that can be used as an argument to
 another @command{stty} command to restore the current settings.  This option
 may not be used in combination with any line settings.
 
+POSIX-1.2024 allows implementations of the @code{-g} option to exclude
+the terminal window size from the output.  This is the behavior of GNU
+@command{stty}.
+
 @end table
 
 Many settings can be turned off by preceding them with a @samp{-}.
