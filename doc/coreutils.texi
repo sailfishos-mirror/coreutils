@@ -13984,7 +13984,8 @@ PIPE_BUF size at a time), that's possible with a construct like:
 tardir=your-pkg-M.N
 tar chof - "$tardir" \
   | tee >(cksum -a sha2 -l 256) > >(cksum -a sha3 -l 256) \
-  | sort | gpg --clearsign > your-pkg-M.N.tar.sig
+  | sort | tee your-pkg-M.N.checksums \
+  | gpg --detach-sign --armor -o your-pkg-M.N.checksums.sig
 @end example
 
 @exitstatus
