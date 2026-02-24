@@ -56,9 +56,14 @@ returns_ 124 timeout --foreground -s0 -k1 .1 sleep 10 && fail=1
 ) || fail=1
 
 # Don't be confused when starting off with a child (Bug#9098).
-out=$(sleep .1 & exec timeout .5 sh -c 'sleep 2; echo foo')
-status=$?
-test "$out" = "" && test $status = 124 || fail=1
+# Use setsid to avoid sleep being in the test's process group, as
+# upon reparenting it can trigger an orphaned process group SIGHUP
+# (if there were stopped processes like in tests/tail/overlay-headers.sh).
+if setsid true; then
+  out=$(setsid sleep .1 & exec timeout .5 sh -c 'sleep 2; echo foo')
+  status=$?
+  test "$out" = "" && test $status = 124 || fail=1
+fi
 
 # Verify --verbose output
 cat > exp <<\EOF

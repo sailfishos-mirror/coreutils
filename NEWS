@@ -30,6 +30,10 @@ GNU coreutils NEWS                                    -*- outline -*-
 
   ./configure --enable-single-binary=hardlinks is now supported on systems
   with dash as the system shell at /bin/sh.
+  [issue introduced in coreutils-9.10]
+
+  The test suite may have failed with a "Hangup" error if run non-interactively.
+  [issue introduced in coreutils-9.10]
 
 
 * Noteworthy changes in release 9.10 (2026-02-04) [stable]

@@ -20,6 +20,8 @@
 . "${srcdir=.}/tests/init.sh"; path_prepend_ ./src
 print_ver_ tail sleep
 
+setsid true || skip_ 'setsid required to control groups'
+
 # Function to count number of lines from tail
 # while ignoring transient errors due to resource limits
 countlines_ ()
@@ -54,8 +56,12 @@ echo start > file2 || framework_failure_
 env sleep 60 & sleep=$!
 
 # Note don't use timeout(1) here as it currently
-# does not propagate SIGCONT
-tail $fastpoll --pid=$sleep -f file1 file2 > out & pid=$!
+# does not propagate SIGCONT.
+# Note use setsid here to ensure we're in a separate process group
+# as we're going to STOP this tail process, and this can trigger
+# the kernel to send SIGHUP to a group if other tests have
+# processes that are reparented. (See tests/timeout/timeout.sh).
+setsid tail $fastpoll --pid=$sleep -f file1 file2 > out & pid=$!
 
 # Ensure tail is running
 kill -0 $pid || fail=1
