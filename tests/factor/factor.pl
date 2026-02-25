@@ -97,6 +97,13 @@ my @Tests =
       {OUT => '4999 340282366920938463463374607431768211297'}],
      ['h-1', '-h 3000', {OUT => '2^3 3 5^3'}],
      ['h-2', '3000 --exponents', {OUT => '2^3 3 5^3'}],
+     ['nul1', {IN_PIPE => '3'},      {OUT => '3'}],
+     ['nul2', {IN_PIPE => "3\000"},  {OUT => '3'}],
+     ['nul3', {IN_PIPE => "3\000foo"},  {OUT => '3'}],
+     ['nul4', {IN_PIPE => "3\000foo bar"},  {OUT => "3: 3\n"},
+      {EXIT => 1},
+      {ERR => "$prog: 'bar' is not a valid positive integer\n"}],
+     # ['nul5', "3\000"},  {OUT => '3'}],  # Not supported by perl framework
     );
 
 
@@ -107,8 +114,22 @@ my $t;
 Test:
 foreach $t (@Tests)
   {
-    (my $arg1 = $t->[1]) =~ s| *\+?||;     # strip '+'
-    ($arg1 = $arg1) =~ s| *-[^ ]+ *||;     # strip option
+    my $arg1;
+
+    # For IN_PIPE tests, the input number comes from the pipe, not $t->[1].
+    foreach my $e (@$t)
+      {
+        ref $e eq 'HASH' && exists $e->{IN_PIPE}
+          and $arg1 = $e->{IN_PIPE};
+      }
+    if (!defined $arg1)
+      {
+        $arg1 = $t->[1];
+      }
+
+    $arg1 =~ s| *\+?||;        # strip '+'
+    $arg1 =~ s| *-[^ ]+ *||;   # strip option
+    $arg1 =~ s|\0[^ \t\n]*||g; # strip NUL to whitespace
 
     # Don't fiddle with expected OUT string if there's a nonzero exit status.
     foreach my $e (@$t)

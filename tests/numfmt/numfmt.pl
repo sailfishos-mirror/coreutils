@@ -43,7 +43,8 @@ my @Tests =
      ['5.1', '--from=iec-i 1Ki',  {OUT => "1024"}],
      ['5.2', '--from=iec-i 1',  {OUT => "1"}],
 
-     ['6', {IN_PIPE => "1234\n"},            {OUT => "1234"}],
+     ['6', {IN_PIPE => "1234\n"},              {OUT => "1234"}],
+     ['6nul', {IN_PIPE => "1234\000foo bar\n"},{OUT => "1234"}],
      ['7', '--from=si', {IN_PIPE => "2K\n"}, {OUT => "2000"}],
      ['7a', '--invalid=fail', {IN_PIPE => "no_NL"}, {OUT => "no_NL"},
               {ERR => "$prog: invalid number: 'no_NL'\n"},
