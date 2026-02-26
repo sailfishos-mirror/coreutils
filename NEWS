@@ -18,6 +18,9 @@ GNU coreutils NEWS                                    -*- outline -*-
 
 ** Improvements
 
+  'groups' will now exit immediately upon receiving a write error, which is
+  significant when listing information for many users.
+
   'nl' now supports multi-byte --section-delimiter characters.
 
   'shuf -i' now operates up to two times faster on systems with unlocked stdio

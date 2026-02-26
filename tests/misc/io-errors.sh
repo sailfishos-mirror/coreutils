@@ -44,6 +44,7 @@ fmt foo
 fold foo
 fold -b foo
 fold -c foo
+groups
 head -n1 foo
 join foo foo
 nl foo

@@ -134,6 +134,9 @@ main (int argc, char **argv)
           if (!print_group_list (argv[optind], ruid, rgid, egid, true, ' '))
             ok = false;
           putchar ('\n');
+
+          if (fflush (stdout) < 0)
+            write_error ();
         }
     }
 
