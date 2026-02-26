@@ -46,6 +46,7 @@ fold -b foo
 fold -c foo
 groups
 head -n1 foo
+id
 join foo foo
 nl foo
 numfmt --invalid=ignore < foo

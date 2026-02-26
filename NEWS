@@ -18,8 +18,8 @@ GNU coreutils NEWS                                    -*- outline -*-
 
 ** Improvements
 
-  'groups' will now exit immediately upon receiving a write error, which is
-  significant when listing information for many users.
+  'groups' and 'id' will now exit immediately upon receiving a write error,
+  which is significant when listing information for many users.
 
   'nl' now supports multi-byte --section-delimiter characters.
 

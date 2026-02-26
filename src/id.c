@@ -458,4 +458,7 @@ print_stuff (char const *pw_name)
     {
       putchar (opt_zero ? '\0' : '\n');
     }
+
+  if (fflush (stdout) < 0)
+    write_error ();
 }
