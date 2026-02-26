@@ -1,5 +1,5 @@
 #!/bin/sh
-# Make sure all of these programs promptly diagnose write errors.
+# Make sure all of these programs diagnose write errors.
 
 # Copyright (C) 2025-2026 Free Software Foundation, Inc.
 
