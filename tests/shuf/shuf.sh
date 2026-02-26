@@ -20,6 +20,12 @@
 print_ver_ shuf
 getlimits_
 
+# ensure randomization doesn't depend solely on ASLR
+# This is a probabilistic test :-)
+# However, the odds of failure are low: 1 in $UINTMAX_MAX (~ 1 in 4B on 32 bit)
+shuf_rand() { setarch -R shuf -i 1-$UINTMAX_MAX -n 1; }
+shuf_rand >out1 && shuf_rand >out2 && compare out1 out2 && fail=1
+
 seq 100 > in || framework_failure_
 
 shuf in >out || fail=1
