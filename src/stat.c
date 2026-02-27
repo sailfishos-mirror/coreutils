@@ -1970,7 +1970,16 @@ main (int argc, char *argv[])
 
   if (format)
     {
-      if (strstr (format, "%N"))
+      bool need_quoting_style = false;
+      for (char const *p = format; (p = strchr (p, '%')); ++p)
+        {
+          if (p[1] == 'N' && (p == format || p[-1] != '%'))
+            {
+              need_quoting_style = true;
+              break;
+            }
+        }
+      if (need_quoting_style)
         getenv_quoting_style ();
       format2 = format;
     }
