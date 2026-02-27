@@ -694,6 +694,7 @@ all_tests =					\
   tests/ls/w-option.sh				\
   tests/ls/multihardlink.sh			\
   tests/ls/no-arg.sh				\
+  tests/ls/non-utf8-hidden.sh			\
   tests/ls/selinux-segfault.sh			\
   tests/ls/quote-align.sh			\
   tests/ls/size-align.sh			\
