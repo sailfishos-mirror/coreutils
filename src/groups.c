@@ -135,7 +135,7 @@ main (int argc, char **argv)
             ok = false;
           putchar ('\n');
 
-          if (fflush (stdout) < 0)
+          if (ferror (stdout))
             write_error ();
         }
     }
