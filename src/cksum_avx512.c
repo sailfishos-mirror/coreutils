@@ -26,11 +26,11 @@
 #define BUFLEN (1 << 16)
 
 bool
-cksum_avx512 (FILE *fp, uint_fast32_t *crc_out, uintmax_t *length_out)
+cksum_avx512 (FILE *fp, uint_fast32_t *crc_out, intmax_t *length_out)
 {
   __m512i buf[BUFLEN / sizeof (__m512i)];
   uint_fast32_t crc = 0;
-  uintmax_t length = 0;
+  intmax_t length = 0;
   size_t bytes_read;
   __m512i single_mult_constant;
   __m512i four_mult_constant;

@@ -27,11 +27,11 @@
 #define BUFLEN (1 << 16)
 
 bool
-cksum_avx2 (FILE *fp, uint_fast32_t *crc_out, uintmax_t *length_out)
+cksum_avx2 (FILE *fp, uint_fast32_t *crc_out, intmax_t *length_out)
 {
   __m256i buf[BUFLEN / sizeof (__m256i)];
   uint_fast32_t crc = 0;
-  uintmax_t length = 0;
+  intmax_t length = 0;
   size_t bytes_read;
   __m256i single_mult_constant;
   __m256i four_mult_constant;

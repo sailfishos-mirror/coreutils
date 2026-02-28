@@ -38,11 +38,11 @@ bswap_neon (uint64x2_t in)
 /* Calculate CRC32 using VMULL CPU instruction found in ARMv8 CPUs */
 
 bool
-cksum_vmull (FILE *fp, uint_fast32_t *crc_out, uintmax_t *length_out)
+cksum_vmull (FILE *fp, uint_fast32_t *crc_out, intmax_t *length_out)
 {
   uint64x2_t buf[BUFLEN / sizeof (uint64x2_t)];
   uint_fast32_t crc = 0;
-  uintmax_t length = 0;
+  intmax_t length = 0;
   size_t bytes_read;
   poly64x2_t single_mult_constant;
   poly64x2_t four_mult_constant;

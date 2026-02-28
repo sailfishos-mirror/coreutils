@@ -29,11 +29,11 @@
 /* Calculate CRC32 using PCLMULQDQ CPU instruction found in x86/x64 CPUs */
 
 bool
-cksum_pclmul (FILE *fp, uint_fast32_t *crc_out, uintmax_t *length_out)
+cksum_pclmul (FILE *fp, uint_fast32_t *crc_out, intmax_t *length_out)
 {
   __m128i buf[BUFLEN / sizeof (__m128i)];
   uint_fast32_t crc = 0;
-  uintmax_t length = 0;
+  intmax_t length = 0;
   size_t bytes_read;
   __m128i single_mult_constant;
   __m128i four_mult_constant;

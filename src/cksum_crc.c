@@ -137,7 +137,7 @@ main (void)
 /* Number of bytes to read at once.  */
 # define BUFLEN (1 << 16)
 
-typedef bool (*cksum_fp_t) (FILE *, uint_fast32_t *, uintmax_t *);
+typedef bool (*cksum_fp_t) (FILE *, uint_fast32_t *, intmax_t *);
 
 static cksum_fp_t
 pclmul_supported (void)
@@ -223,11 +223,11 @@ vmull_supported (void)
 }
 
 static bool
-cksum_slice8 (FILE *fp, uint_fast32_t *crc_out, uintmax_t *length_out)
+cksum_slice8 (FILE *fp, uint_fast32_t *crc_out, intmax_t *length_out)
 {
   uint32_t buf[BUFLEN / sizeof (uint32_t)];
   uint_fast32_t crc = 0;
-  uintmax_t length = 0;
+  intmax_t length = 0;
   size_t bytes_read;
 
   if (!fp || !crc_out || !length_out)
@@ -279,9 +279,9 @@ cksum_slice8 (FILE *fp, uint_fast32_t *crc_out, uintmax_t *length_out)
    Return -1 on error, 0 on success.  */
 
 int
-crc_sum_stream (FILE *stream, void *resstream, uintmax_t *length)
+crc_sum_stream (FILE *stream, void *resstream, intmax_t *length)
 {
-  uintmax_t total_bytes = 0;
+  intmax_t total_bytes = 0;
   uint_fast32_t crc = 0;
 
   static cksum_fp_t cksum_fp;
@@ -315,11 +315,11 @@ crc_sum_stream (FILE *stream, void *resstream, uintmax_t *length)
    Return -1 on error, 0 on success.  */
 
 int
-crc32b_sum_stream (FILE *stream, void *resstream, uintmax_t *reslen)
+crc32b_sum_stream (FILE *stream, void *resstream, intmax_t *reslen)
 {
   uint32_t buf[BUFLEN / sizeof (uint32_t)];
   uint32_t crc = 0;
-  uintmax_t len = 0;
+  intmax_t len = 0;
   size_t bytes_read;
 
   if (!stream || !resstream || !reslen)
@@ -358,7 +358,7 @@ crc32b_sum_stream (FILE *stream, void *resstream, uintmax_t *reslen)
 void
 output_crc (char const *file, MAYBE_UNUSED int binary_file,
             void const *digest, bool raw, MAYBE_UNUSED bool tagged,
-            unsigned char delim, bool args, uintmax_t length)
+            unsigned char delim, bool args, intmax_t length)
 {
   if (raw)
     {
@@ -368,7 +368,7 @@ output_crc (char const *file, MAYBE_UNUSED int binary_file,
       return;
     }
 
-  printf ("%u %ju", *(unsigned int *)digest, length);
+  printf ("%u %jd", *(unsigned int *)digest, length);
   if (args)
     printf (" %s", file);
   putchar (delim);
