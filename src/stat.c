@@ -1971,9 +1971,10 @@ main (int argc, char *argv[])
   if (format)
     {
       bool need_quoting_style = false;
-      for (char const *p = format; (p = strchr (p, '%')); ++p)
+      for (char const *p = format; (p = strchr (p, '%'));
+           p += (p[1] == '%') + 1)
         {
-          if (p[1] == 'N' && (p == format || p[-1] != '%'))
+          if (p[1] == 'N')
             {
               need_quoting_style = true;
               break;
