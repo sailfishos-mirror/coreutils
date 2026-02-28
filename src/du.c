@@ -464,10 +464,11 @@ print_size (const struct duinfo *pdui, char const *string)
           fputs (timetostr (pdui->tmax.tv_sec, buf), stdout);
         }
     }
-  printf ("\t%s%c", string, opt_nul_terminate_output ? '\0' : '\n');
-  if (fflush (stdout) != 0)
+  putchar ('\t');
+  fputs (string, stdout);
+  putchar (opt_nul_terminate_output ? '\0' : '\n');
+  if (ferror (stdout))
     write_error ();
-
 }
 
 /* Fill the di_mnt set with local mount point dev/ino pairs.  */
