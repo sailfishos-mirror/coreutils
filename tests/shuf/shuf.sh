@@ -24,7 +24,7 @@ uses_strace_
 # Ensure we handle unsupported getrandom syscall gracefully
 strace -o /dev/null -e inject=getrandom:error=ENOSYS shuf -i 1-9
 ret=$?
-test $? = 0 || test $? = 1 || fail=1
+test $ret = 0 || test $ret = 1 || fail=1
 
 # ensure randomization doesn't depend solely on ASLR
 # This is a probabilistic test :-)
