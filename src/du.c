@@ -467,7 +467,7 @@ print_size (const struct duinfo *pdui, char const *string)
   putchar ('\t');
   fputs (string, stdout);
   putchar (opt_nul_terminate_output ? '\0' : '\n');
-  if (ferror (stdout))
+  if (fflush (stdout) < 0)
     write_error ();
 }
 
