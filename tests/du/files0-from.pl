@@ -23,6 +23,8 @@ use strict;
 
 my $prog = 'du';
 
+my $limits = getlimits ();
+
 # Turn off localization of executable's output.
 @ENV{qw(LANGUAGE LANG LC_ALL)} = ('C') x 3;
 
@@ -36,9 +38,21 @@ my @Tests =
     ],
 
    # missing input file
-   ['missing', '--files0-from=missing', {EXIT=>1},
+   ['missing1', '--files0-from=missing', {EXIT=>1},
     {ERR => "$prog: cannot open 'missing' for reading: "
-     . "No such file or directory\n"}],
+     . "$limits->{ENOENT}\n"}],
+
+   # Input file listing missing files.
+   ['missing2', '--files0-from=-', '<', {IN=>"missing\0missing\0"}, {EXIT=>1},
+    {ERR => "$prog: cannot access 'missing': $limits->{ENOENT}\n" x 2}],
+
+   # Input file listing duplicate files.
+   ['duplicate1', '--files0-from=-', '<', {IN=>"g\0g\0"}, {AUX=>{g=>''}},
+    {OUT=>"0\tg\n"}, {OUT_SUBST=>'s/^\d+/0/'}],
+
+   # Input file listing duplicate files, using the -l option.
+   ['duplicate2', '-l --files0-from=-', '<', {IN=>"g\0g\0"}, {AUX=>{g=>''}},
+    {OUT=>"0\tg\n" x 2}, {OUT_SUBST=>'s/^\d+/0/'}],
 
    # input file name of '-'
    ['minus-in-stdin', '--files0-from=-', '<', {IN=>{f=>'-'}}, {EXIT=>1},

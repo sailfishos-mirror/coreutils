@@ -23,6 +23,8 @@ use strict;
 
 my $prog = 'wc';
 
+my $limits = getlimits ();
+
 # Turn off localization of executable's output.
 @ENV{qw(LANGUAGE LANG LC_ALL)} = ('C') x 3;
 
@@ -36,9 +38,18 @@ my @Tests =
     ],
 
    # missing input file
-   ['missing', '--files0-from=missing', {EXIT=>1},
+   ['missing1', '--files0-from=missing', {EXIT=>1},
     {ERR => "$prog: cannot open 'missing' for reading: "
-     . "No such file or directory\n"}],
+     . "$limits->{ENOENT}\n"}],
+
+   # Input file listing missing files.
+   ['missing2', '--files0-from=-', '<', {IN=>"missing\0missing\0"}, {EXIT=>1},
+    {OUT=>"0 0 0 total\n"},
+    {ERR => "$prog: missing: $limits->{ENOENT}\n" x 2}],
+
+   # Input file listing duplicate files.
+   ['duplicate1', '--files0-from=-', '<', {IN=>"g\0g\0"}, {AUX=>{g=>''}},
+    {OUT=>"0 0 0 g\n" x 2 . "0 0 0 total\n"}],
 
    # input file name of '-'
    ['minus-in-stdin', '--files0-from=-', '<', {IN=>{f=>'-'}}, {EXIT=>1},
